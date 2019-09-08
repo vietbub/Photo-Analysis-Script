@@ -1,0 +1,31 @@
+---
+Author: Quang Tran
+---
+```{r, imageprocessing}
+#Loads and installs EBImage; uncomment the two lines below if first time use
+#source("https://bioconductor.org/biocLite.R")
+#biocLite("EBImage")
+#####
+library(EBImage)
+#Setting up for loop
+incre<-as.numeric(readline('Please enter increments of photos: '))#Increment of photos in the folder; bypasses videos
+photo1<-as.numeric(readline('Please enter first photo (base photo to compare with): ')) #control unit; compare all photo to this one
+photo2<-as.numeric(readline('Please enter first photo you want to compare: '))#The first photo you want to compare with; beginning of set
+photo3<-as.numeric(readline('Please enter last photo you want to compare: '))#Last photo you want to compare with; end of set
+directory<-readline('Please enter the directory you want to place flagged photos: ')#User manually creates directory/folder to copy the flagged photos into
+a<-seq(photo2,photo3,incre)#sets up values in for loop
+##### For loop
+for (i in a){
+  b<-readImage(paste0(photo1,".jpg"))#Control photo
+  c<-readImage(paste0(i,".jpg"))#Each photo in the set
+  if(cor(b,c,method="spearman")<.9){
+    #print(i)
+    writeImage(c,files=paste0(directory,i,".jpg"))#copies image to new folder
+  }
+}
+```
+
+
+    
+
+
